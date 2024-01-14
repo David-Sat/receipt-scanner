@@ -1,0 +1,41 @@
+[
+    {
+      "input": "Wrigley's Extra, 2.25 Allwetter-Kleb., 3.99 Griech. Pur 4x150g, 1.29 Torffr. Blaubeeren, 2.99 Lauchzwiebeln, 0.69 Mandarinen 1kg, 1.39 Kerryg Orig 250g, 1.59 Kerryg Orig 250g, 1.39",
+      "output": {
+        "receiptItems": [
+          {
+            "itemName": "Wrigley's Extra",
+            "price": 2.25
+          },
+          {
+            "itemName": "Allwetter-Kleb.",
+            "price": 3.99
+          },
+          {
+            "itemName": "Griech. Pur 4x150g",
+            "price": 1.29
+          },
+          {
+            "itemName": "Torffr. Blaubeeren",
+            "price": 2.99
+          },
+          {
+            "itemName": "Lauchzwiebeln",
+            "price": 0.69
+          },
+          {
+            "itemName": "Mandarinen 1kg",
+            "price": 1.39
+          },
+          {
+            "itemName": "Kerryg Orig 250g",
+            "price": 1.59
+          },
+          {
+            "itemName": "Kerryg Orig 250g",
+            "price": 1.39
+          }
+        ]
+      }
+    }
+]

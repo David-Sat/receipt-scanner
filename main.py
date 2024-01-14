@@ -1,10 +1,12 @@
 import streamlit as st
 
+import json
 from PIL import Image
+from pathlib import Path
 import io
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from utils.ai_adapter import process_image
+from utils.ai_adapter import process_image, create_raw_json, enrich_json
 
 
 def get_api_key():
@@ -17,7 +19,18 @@ def get_api_key():
         st.info("Enter a Google API Key to continue")
         st.stop()
 
+
+def process_receipt(image_url: str) -> str:
+    raw_text = process_image(image_url)
+    st.write(raw_text)
+    raw_json = create_raw_json(raw_text)
+    st.write(raw_json)
+    enriched_json = enrich_json(raw_json)
+    st.write(enriched_json)
+    return enriched_json
+
 def main():
+
 
     get_api_key()
     st.title("Grocery Receipt Scanner Prototype")
@@ -32,8 +45,10 @@ def main():
     # Process button
     if st.button("Process Images"):
         if uploaded_files:
-            image_path = "https://images.t-online.de/2021/06/89589144v1/0x0:768x1024/fit-in/__WIDTH__x0/image.jpg"
-            output = process_image(image_path)
+            #image_path = "https://images.t-online.de/2021/06/89589144v1/0x0:768x1024/fit-in/__WIDTH__x0/image.jpg"
+            image_path = "https://johannesjarens.files.wordpress.com/2015/12/kassenzettel-003-zettel.jpg"
+
+            output = process_receipt(image_path)
             st.write(output)
             st.success(f"Processed {len(uploaded_files)} images.")
 
