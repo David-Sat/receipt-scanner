@@ -6,7 +6,7 @@ from pathlib import Path
 import io
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from utils.ai_adapter import process_image, create_raw_json, enrich_json
+from utils.ai_adapter import process_image, create_raw_json, enrich_json, retry_function
 
 
 def get_api_key():
@@ -21,17 +21,29 @@ def get_api_key():
 
 
 def process_receipt(image_url: str) -> str:
-    raw_text = process_image(image_url)
-    st.write(raw_text)
-    raw_json = create_raw_json(raw_text)
-    st.write(raw_json)
-    enriched_json = enrich_json(raw_json)
-    st.write(enriched_json)
-    return enriched_json
+    with st.spinner('Analysing receipt...'):
+        raw_text = process_image(image_url)
+        st.write(raw_text)
+
+    try:
+        with st.spinner('Processing bought items...'):
+            raw_json = retry_function(create_raw_json, raw_text)
+            st.write(raw_json)
+
+        with st.spinner('Analysing nutritional values...'):
+            enriched_json = retry_function(enrich_json, raw_json)
+            st.write(enriched_json)
+
+        st.success('Processing complete!')
+        return enriched_json
+
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+        return ""
+
+
 
 def main():
-
-
     get_api_key()
     st.title("Grocery Receipt Scanner Prototype")
 

@@ -105,3 +105,28 @@ def enrich_json(data_raw_json: str) -> str:
 
     output = chain.invoke({})
     return output
+
+
+def is_valid_json(data):
+    try:
+        json.loads(data)
+        return True
+    except json.JSONDecodeError:
+        return False
+
+def retry_function(func, arg, max_attempts=3):
+    for attempt in range(max_attempts):
+        try:
+            result = func(arg)
+            if is_valid_json(result):
+                return result
+            else:
+                raise ValueError("Invalid JSON returned")
+        except (ValueError, json.JSONDecodeError) as e:
+            if attempt == max_attempts - 1:
+                raise
+            print(f"Attempt {attempt + 1} failed: {e}. Retrying...")
+
+# Example usage
+# output = retry_function(create_raw_json, raw_text)
+# output = retry_function(enrich_json, data_raw_json)
