@@ -9,7 +9,6 @@ import io
 import pandas as pd
 
 
-from langchain_google_genai import ChatGoogleGenerativeAI
 from utils.ai_adapter import process_image, create_raw_json, enrich_json, retry_function, filter_list, get_healthy_alternatives
 
 
@@ -97,7 +96,7 @@ def process_receipt(image_url: str) -> str:
 
 def main():
     get_api_key()
-    st.title("NutriSnap")
+    st.title("nourishLens")
 
     if 'receipt_data' not in st.session_state:
         try:
@@ -120,22 +119,19 @@ def main():
     image_url = st.text_input("Enter image URL", value=st.session_state['image_url'])
 
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3 = st.columns(3)
     with col1:
-        if st.button("Use Example 1"):
+        if st.button("Example 1"):
             st.session_state['image_url'] = example_urls[0]
 
     with col2:
-        if st.button("Use Example 2"):
+        if st.button("Example 2"):
             st.session_state['image_url'] = example_urls[1]
 
     with col3:
-        if st.button("Use Example 3"):
+        if st.button("Example 3"):
             st.session_state['image_url'] = example_urls[2]
 
-    with col4:
-        if st.button("Use Example 4"):
-            st.session_state['image_url'] = example_urls[3]
 
     if st.session_state['image_url']:
         st.image(st.session_state['image_url'], caption="Image Preview", use_column_width=True)

@@ -115,7 +115,7 @@ def enrich_json(data_raw_json: str) -> str:
 def get_healthy_alternatives(unhealthy_list: str) -> str:
     text_model = ChatGoogleGenerativeAI(model="gemini-pro", convert_system_message_to_human=True)
 
-    prompt = "Provide healthy alternatives in the same price range for the following items: \n" + unhealthy_list
+    prompt = "Shortly provide healthy alternatives in the same price range for the following items: \n" + unhealthy_list
     result = text_model.invoke(prompt)
 
     return result.content
