@@ -1,0 +1,219 @@
+{
+    "receiptItems": [
+      {
+        "itemName": "Whole Wheat Bread",
+        "price": 2.5,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Cheddar Cheese",
+        "price": 3,
+        "nutritionalValue": 5
+      },
+      {
+        "itemName": "Frozen Pizza",
+        "price": 4.99,
+        "nutritionalValue": 3
+      },
+      {
+        "itemName": "Fresh Spinach",
+        "price": 1.99,
+        "nutritionalValue": 9
+      },
+      {
+        "itemName": "Apples (1kg)",
+        "price": 2.5,
+        "nutritionalValue": 8
+      },
+      {
+        "itemName": "Canned Tuna",
+        "price": 2,
+        "nutritionalValue": 6
+      },
+      {
+        "itemName": "Almond Milk",
+        "price": 2.8,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Potato Chips",
+        "price": 1.5,
+        "nutritionalValue": 2
+      },
+      {
+        "itemName": "Ground Beef (500g)",
+        "price": 5,
+        "nutritionalValue": 4
+      },
+      {
+        "itemName": "Dark Chocolate",
+        "price": 2.3,
+        "nutritionalValue": 6
+      },
+      {
+        "itemName": "Instant Noodles",
+        "price": 0.99,
+        "nutritionalValue": 2
+      },
+      {
+        "itemName": "Avocados",
+        "price": 3,
+        "nutritionalValue": 8
+      },
+      {
+        "itemName": "Greek Yogurt",
+        "price": 1.5,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Orange Juice",
+        "price": 3.2,
+        "nutritionalValue": 5
+      },
+      {
+        "itemName": "Chicken Breast (1kg)",
+        "price": 6.5,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Rice (1kg)",
+        "price": 2.2,
+        "nutritionalValue": 6
+      },
+      {
+        "itemName": "Tomatoes (500g)",
+        "price": 1.8,
+        "nutritionalValue": 8
+      },
+      {
+        "itemName": "Ice Cream",
+        "price": 3,
+        "nutritionalValue": 3
+      },
+      {
+        "itemName": "Olive Oil",
+        "price": 4,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Granola Bars",
+        "price": 2.5,
+        "nutritionalValue": 5
+      },
+      {
+        "itemName": "Green Tea",
+        "price": 3,
+        "nutritionalValue": 9
+      },
+      {
+        "itemName": "Quinoa (500g)",
+        "price": 3.5,
+        "nutritionalValue": 8
+      },
+      {
+        "itemName": "Soda (2L)",
+        "price": 1.2,
+        "nutritionalValue": 1
+      },
+      {
+        "itemName": "Eggs (12)",
+        "price": 2.5,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Sweet Potatoes (1kg)",
+        "price": 2,
+        "nutritionalValue": 9
+      },
+      {
+        "itemName": "Cereal",
+        "price": 2.99,
+        "nutritionalValue": 4
+      },
+      {
+        "itemName": "Red Wine (750ml)",
+        "price": 8,
+        "nutritionalValue": 5
+      },
+      {
+        "itemName": "Salmon Fillet (500g)",
+        "price": 10,
+        "nutritionalValue": 9
+      },
+      {
+        "itemName": "Broccoli (500g)",
+        "price": 2,
+        "nutritionalValue": 9
+      },
+      {
+        "itemName": "Milk Chocolate",
+        "price": 1.5,
+        "nutritionalValue": 3
+      },
+      {
+        "itemName": "Peanut Butter",
+        "price": 2.99,
+        "nutritionalValue": 6
+      },
+      {
+        "itemName": "Couscous (500g)",
+        "price": 2,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Maple Syrup",
+        "price": 3.5,
+        "nutritionalValue": 4
+      },
+      {
+        "itemName": "Beef Jerky",
+        "price": 3.99,
+        "nutritionalValue": 5
+      },
+      {
+        "itemName": "Blueberries (250g)",
+        "price": 3,
+        "nutritionalValue": 8
+      },
+      {
+        "itemName": "Lettuce",
+        "price": 1,
+        "nutritionalValue": 8
+      },
+      {
+        "itemName": "Protein Bars",
+        "price": 2,
+        "nutritionalValue": 6
+      },
+      {
+        "itemName": "Bagels (6 pack)",
+        "price": 2.5,
+        "nutritionalValue": 5
+      },
+      {
+        "itemName": "Cola (6 pack)",
+        "price": 3,
+        "nutritionalValue": 1
+      },
+      {
+        "itemName": "Mixed Nuts (200g)",
+        "price": 3,
+        "nutritionalValue": 7
+      },
+      {
+        "itemName": "Raspberries (250g)",
+        "price": 3.5,
+        "nutritionalValue": 8
+      },
+      {
+        "itemName": "White Bread",
+        "price": 1.5,
+        "nutritionalValue": 3
+      },
+      {
+        "itemName": "Honey",
+        "price": 3,
+        "nutritionalValue": 5
+      }
+    ]
+  }

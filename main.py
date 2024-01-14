@@ -4,6 +4,8 @@ import json
 from PIL import Image
 from pathlib import Path
 import io
+import pandas as pd
+
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from utils.ai_adapter import process_image, create_raw_json, enrich_json, retry_function, filter_list
@@ -18,6 +20,10 @@ def get_api_key():
     if not st.session_state["GOOGLE_API_KEY"]:
         st.info("Enter a Google API Key to continue")
         st.stop()
+
+def json_to_df(json_str):
+    data = json.loads(json_str)
+    return pd.DataFrame(data["receiptItems"])
 
 
 def process_receipt(image_url: str) -> str:
@@ -86,14 +92,18 @@ def main():
         st.image(st.session_state['image_url'], caption="Image Preview", use_column_width=True)
 
     # Process button
-    if st.button("Process Image", type="primary"):
+    if st.button("Add Receipt", type="primary"):
         if image_url:
             output = process_receipt(image_url)
 
         else:
             st.error("Please enter an image URL to process.")
 
-
+    if st.button("Load and Display JSON Data"):
+        with open("data.json", "r") as file:
+            json_data = file.read()
+            df = json_to_df(json_data)
+            st.write(df)
 
 
 
