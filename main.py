@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import assets
 
 from PIL import Image
 import io
@@ -15,10 +17,21 @@ def get_api_key():
             st.session_state["GOOGLE_API_KEY"] = st.sidebar.text_input("Google API Key", type="password")
     if not st.session_state["GOOGLE_API_KEY"]:
         st.info("Enter a Google API Key to continue")
-        st.stop()
+        st.stop()   
+
+
+def calculate_average_nutritional_level():
+    file_path = "assets/example.json"
+    with open(file_path, 'r') as file:
+        data = json.load(file)  
+    nutritional_values = [item['nutritionalValue'] for item in data['receiptItems']]
+    average_nutritional_value = sum(nutritional_values) / len(nutritional_values)
+    st.title("Average Nutritional Value Calculator")
+    st.write("Nutritional Values:", nutritional_values)
+    st.write("Average Nutritional Value:", average_nutritional_value)
+
 
 def main():
-
     get_api_key()
     st.title("Grocery Receipt Scanner Prototype")
 
@@ -40,12 +53,8 @@ def main():
         else:
             st.error("Please upload at least one image to process.")
 
-
-
-
     vision_model = ChatGoogleGenerativeAI(model="gemini-pro-vision", stream=True, convert_system_message_to_human=True)
     text_model = ChatGoogleGenerativeAI(model="gemini-pro", stream=True, convert_system_message_to_human=True)
-
 
 
 if __name__ == "__main__":
