@@ -112,6 +112,14 @@ def enrich_json(data_raw_json: str) -> str:
     output = chain.invoke({})
     return output
 
+def get_healthy_alternatives(unhealthy_list: str) -> str:
+    text_model = ChatGoogleGenerativeAI(model="gemini-pro", convert_system_message_to_human=True)
+
+    prompt = "Provide healthy alternatives in the same price range for the following items: \n" + unhealthy_list
+    result = text_model.invoke(prompt)
+
+    return result.content
+
 
 def clean_json_string(json_string):
     start = json_string.find('{')

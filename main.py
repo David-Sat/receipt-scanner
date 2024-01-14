@@ -10,7 +10,7 @@ import pandas as pd
 
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from utils.ai_adapter import process_image, create_raw_json, enrich_json, retry_function, filter_list
+from utils.ai_adapter import process_image, create_raw_json, enrich_json, retry_function, filter_list, get_healthy_alternatives
 
 
 def get_api_key():
@@ -30,32 +30,61 @@ def json_to_df(json_str):
 
 
 def calculate_average_nutritional_level():
-    file_path = "assets/example.json"
-    with open(file_path, 'r') as file:
-        data = json.load(file)  
-    nutritional_values = [item['nutritionalValue'] for item in data['receiptItems']]
-    average_nutritional_value = sum(nutritional_values) / len(nutritional_values)
-    st.title("Average Nutritional Value Calculator")
-    st.write("Nutritional Values:", nutritional_values)
-    st.write("Average Nutritional Value:", average_nutritional_value)
+    if 'receipt_data' in st.session_state and st.session_state['receipt_data'].get('receiptItems'):
+        nutritional_values = [item['nutritionalValue'] for item in st.session_state['receipt_data']['receiptItems']]
+        
+        if nutritional_values:
+            average_nutritional_value = sum(nutritional_values) / len(nutritional_values)
+            st.title("Nutritional Insights")
+            st.write("Average Nutritional Value:", average_nutritional_value)
+            chart_data = {'Nutritional Values': nutritional_values, 'Average': [average_nutritional_value] * len(nutritional_values)}
+            st.line_chart(chart_data)
+        else:
+            st.write("No nutritional data available to calculate average.")
+    else:
+        st.write("No data available in the session state.")
+
+
+def get_three_least_nutritious_items():
+    file_path = "data.json"
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        items = data['receiptItems']
+        sorted_items = sorted(items, key=lambda x: x['nutritionalValue'])
+        least_nutritious_items = sorted_items[:3]
+        
+        return least_nutritious_items
+
+    except Exception as e:
+        st.error(f"An error occurred while loading or processing the data: {e}")
+        return []
+
+def get_and_display_healthy_alternatives(unhealthy_items_str):
+    try:
+        with st.spinner('Finding healthy alternatives...'):
+            healthy_alternatives = get_healthy_alternatives(unhealthy_items_str)
+            st.success('Healthy alternatives found!')
+            st.write(healthy_alternatives)
+    except Exception as e:
+        st.error(f"An error occurred while finding healthy alternatives: {e}")
 
 def process_receipt(image_url: str) -> str:
     with st.spinner('Analysing receipt...'):
         raw_text = process_image(image_url)
-        st.write(raw_text)
 
     with st.spinner('Filtering bought items...'):
         filtered_text = filter_list(raw_text)
-        st.write(filtered_text)
 
     try:
         with st.spinner('Processing bought items...'):
             raw_json = retry_function(create_raw_json, filtered_text)
-            st.write(raw_json)
 
         with st.spinner('Analysing nutritional values...'):
             enriched_json = retry_function(enrich_json, raw_json)
-            st.write(enriched_json)
+
+        new_items = json.loads(enriched_json)["receiptItems"]
+        st.session_state['receipt_data']['receiptItems'].extend(new_items)
 
         st.success('Processing complete!')
         return enriched_json
@@ -68,7 +97,14 @@ def process_receipt(image_url: str) -> str:
 
 def main():
     get_api_key()
-    st.title("Grocery Receipt Scanner Prototype")
+    st.title("NutriSnap")
+
+    if 'receipt_data' not in st.session_state:
+        try:
+            with open("data.json", "r") as file:
+                st.session_state['receipt_data'] = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            st.session_state['receipt_data'] = {"receiptItems": []}
 
     # Quick access example URLs
     example_urls = [
@@ -114,16 +150,29 @@ def main():
 
 
     if st.button("Load and Display JSON Data"):
-        with open("data.json", "r") as file:
-            json_data = file.read()
+        if 'receipt_data' in st.session_state and st.session_state['receipt_data']:
+            # Convert the session state data to JSON string
+            json_data = json.dumps(st.session_state['receipt_data'])
             df = json_to_df(json_data)
             st.write(df)
+        else:
+            st.write("No data available in the session state.")
 
 
+    if st.button("Show Suggestions"):
+        least_nutritious_items = get_three_least_nutritious_items()
+        
+        unhealthy_items_str = ", ".join([f"{item['itemName']} ${item['price']}" for item in least_nutritious_items])
 
-    vision_model = ChatGoogleGenerativeAI(model="gemini-pro-vision", stream=True, convert_system_message_to_human=True)
-    text_model = ChatGoogleGenerativeAI(model="gemini-pro", stream=True, convert_system_message_to_human=True)
+        if unhealthy_items_str:
+            get_and_display_healthy_alternatives(unhealthy_items_str)
+        else:
+            st.write("No items to find alternatives for.")
 
+
+    calculate_average_nutritional_level()
+
+    
 
 if __name__ == "__main__":
     main()
