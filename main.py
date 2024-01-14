@@ -6,7 +6,7 @@ from pathlib import Path
 import io
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from utils.ai_adapter import process_image, create_raw_json, enrich_json, retry_function
+from utils.ai_adapter import process_image, create_raw_json, enrich_json, retry_function, filter_list
 
 
 def get_api_key():
@@ -25,9 +25,13 @@ def process_receipt(image_url: str) -> str:
         raw_text = process_image(image_url)
         st.write(raw_text)
 
+    with st.spinner('Filtering bought items...'):
+        filtered_text = filter_list(raw_text)
+        st.write(filtered_text)
+
     try:
         with st.spinner('Processing bought items...'):
-            raw_json = retry_function(create_raw_json, raw_text)
+            raw_json = retry_function(create_raw_json, filtered_text)
             st.write(raw_json)
 
         with st.spinner('Analysing nutritional values...'):
@@ -49,9 +53,10 @@ def main():
 
     # Quick access example URLs
     example_urls = [
+        "https://i.imgur.com/Eaz0cdG.jpeg",
+        "https://i.imgur.com/t2o25bv.jpeg",
         "https://images.t-online.de/2021/06/89589144v1/0x0:768x1024/fit-in/__WIDTH__x0/image.jpg",
         "https://johannesjarens.files.wordpress.com/2015/12/kassenzettel-003-zettel.jpg",
-        "https://example.com/receipt3.jpg"
     ]
 
     if 'image_url' not in st.session_state:
@@ -60,7 +65,7 @@ def main():
     image_url = st.text_input("Enter image URL", value=st.session_state['image_url'])
 
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         if st.button("Use Example 1"):
             st.session_state['image_url'] = example_urls[0]
@@ -72,6 +77,10 @@ def main():
     with col3:
         if st.button("Use Example 3"):
             st.session_state['image_url'] = example_urls[2]
+
+    with col4:
+        if st.button("Use Example 4"):
+            st.session_state['image_url'] = example_urls[3]
 
     if st.session_state['image_url']:
         st.image(st.session_state['image_url'], caption="Image Preview", use_column_width=True)

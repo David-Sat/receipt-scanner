@@ -21,7 +21,7 @@ def process_image(image_path: str) -> str:
 
     multimodal_prompt = HumanMessage(
         content=[
-            {"type": "text", "text": "List all the items on this receipt, including their prices in a comma separated list."},
+            {"type": "text", "text": "List all the food items on this receipt, including their prices in a comma separated list."},
             {"type": "image_url", "image_url": image_path}
         ]
     )
@@ -37,6 +37,12 @@ def process_image(image_path: str) -> str:
     output = chain.invoke({})
     return output
 
+def filter_list(raw_text: str) -> str:
+    text_model = ChatGoogleGenerativeAI(model="gemini-pro", convert_system_message_to_human=True)
+
+    result = text_model.invoke("Remove all non food items and their prices from the list. DO NOT ADD ANY ADDITIONAL TEXT. \n" + raw_text)
+
+    return result.content
 
 def create_raw_json(raw_text: str) -> str:
     text_model = ChatGoogleGenerativeAI(model="gemini-pro", convert_system_message_to_human=True)
@@ -107,6 +113,13 @@ def enrich_json(data_raw_json: str) -> str:
     return output
 
 
+def clean_json_string(json_string):
+    start = json_string.find('{')
+    end = json_string.rfind('}')
+    if start != -1 and end != -1:
+        return json_string[start:end+1]
+    return json_string
+
 def is_valid_json(data):
     try:
         json.loads(data)
@@ -119,15 +132,12 @@ def retry_function(func, arg, max_attempts=3):
     for attempt in range(max_attempts):
         try:
             result = func(arg)
-            if is_valid_json(result):
-                return result
+            cleaned_result = clean_json_string(result)  # Clean the result
+            if is_valid_json(cleaned_result):
+                return cleaned_result  # Return the cleaned result
             else:
                 raise ValueError("Invalid JSON returned")
         except (ValueError, json.JSONDecodeError) as e:
             if attempt == max_attempts - 1:
                 raise
             print(f"Attempt {attempt + 1} failed: {e}. Retrying...")
-
-# Example usage
-# output = retry_function(create_raw_json, raw_text)
-# output = retry_function(enrich_json, data_raw_json)
