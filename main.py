@@ -47,25 +47,43 @@ def main():
     get_api_key()
     st.title("Grocery Receipt Scanner Prototype")
 
-    # Allow the user to upload one or more images
-    uploaded_files = st.file_uploader("Upload images", accept_multiple_files=True, type=['jpg', 'jpeg', 'png'])
+    # Quick access example URLs
+    example_urls = [
+        "https://images.t-online.de/2021/06/89589144v1/0x0:768x1024/fit-in/__WIDTH__x0/image.jpg",
+        "https://johannesjarens.files.wordpress.com/2015/12/kassenzettel-003-zettel.jpg",
+        "https://example.com/receipt3.jpg"
+    ]
 
-    # Display each uploaded image
-    for uploaded_file in uploaded_files:
-        st.image(uploaded_file, caption=uploaded_file.name)
+    if 'image_url' not in st.session_state:
+        st.session_state['image_url'] = ""
+
+    image_url = st.text_input("Enter image URL", value=st.session_state['image_url'])
+
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("Use Example 1"):
+            st.session_state['image_url'] = example_urls[0]
+
+    with col2:
+        if st.button("Use Example 2"):
+            st.session_state['image_url'] = example_urls[1]
+
+    with col3:
+        if st.button("Use Example 3"):
+            st.session_state['image_url'] = example_urls[2]
+
+    if st.session_state['image_url']:
+        st.image(st.session_state['image_url'], caption="Image Preview", use_column_width=True)
 
     # Process button
-    if st.button("Process Images"):
-        if uploaded_files:
-            #image_path = "https://images.t-online.de/2021/06/89589144v1/0x0:768x1024/fit-in/__WIDTH__x0/image.jpg"
-            image_path = "https://johannesjarens.files.wordpress.com/2015/12/kassenzettel-003-zettel.jpg"
-
-            output = process_receipt(image_path)
-            st.write(output)
-            st.success(f"Processed {len(uploaded_files)} images.")
+    if st.button("Process Image", type="primary"):
+        if image_url:
+            output = process_receipt(image_url)
 
         else:
-            st.error("Please upload at least one image to process.")
+            st.error("Please enter an image URL to process.")
+
 
 
 

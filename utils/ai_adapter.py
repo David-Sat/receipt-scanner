@@ -50,7 +50,7 @@ def create_raw_json(raw_text: str) -> str:
 
     prompt = ChatPromptTemplate.from_messages(
             [
-                ("system", "Convert the provided lists to JSON."),
+                ("system", "Convert the provided lists to JSON. Only return JSON. DO NOT ADD ANY ADDITIONAL TEXT."),
                 few_shot_prompt,
                 ("human", raw_text)
             ] 
@@ -72,7 +72,7 @@ def enrich_json(data_raw_json: str) -> str:
 
     data = json.loads(data_raw_json)
 
-    result = text_model.invoke("Enrich each item in the JSON with a nutritional value from 0 to 10. \n" + data_raw_json)
+    result = text_model.invoke("Enrich each item in the JSON with a nutritional value from 0 to 10. DO NOT ADD ANY ADDITIONAL TEXT. \n" + data_raw_json)
 
     return result.content
 
@@ -112,6 +112,7 @@ def is_valid_json(data):
         json.loads(data)
         return True
     except json.JSONDecodeError:
+        print(data)
         return False
 
 def retry_function(func, arg, max_attempts=3):
