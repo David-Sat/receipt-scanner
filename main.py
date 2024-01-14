@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import assets
 
 import json
 from PIL import Image
@@ -19,12 +21,23 @@ def get_api_key():
             st.session_state["GOOGLE_API_KEY"] = st.sidebar.text_input("Google API Key", type="password")
     if not st.session_state["GOOGLE_API_KEY"]:
         st.info("Enter a Google API Key to continue")
-        st.stop()
+        st.stop()   
+
 
 def json_to_df(json_str):
     data = json.loads(json_str)
     return pd.DataFrame(data["receiptItems"])
 
+
+def calculate_average_nutritional_level():
+    file_path = "assets/example.json"
+    with open(file_path, 'r') as file:
+        data = json.load(file)  
+    nutritional_values = [item['nutritionalValue'] for item in data['receiptItems']]
+    average_nutritional_value = sum(nutritional_values) / len(nutritional_values)
+    st.title("Average Nutritional Value Calculator")
+    st.write("Nutritional Values:", nutritional_values)
+    st.write("Average Nutritional Value:", average_nutritional_value)
 
 def process_receipt(image_url: str) -> str:
     with st.spinner('Analysing receipt...'):
@@ -99,6 +112,7 @@ def main():
         else:
             st.error("Please enter an image URL to process.")
 
+
     if st.button("Load and Display JSON Data"):
         with open("data.json", "r") as file:
             json_data = file.read()
@@ -109,7 +123,6 @@ def main():
 
     vision_model = ChatGoogleGenerativeAI(model="gemini-pro-vision", stream=True, convert_system_message_to_human=True)
     text_model = ChatGoogleGenerativeAI(model="gemini-pro", stream=True, convert_system_message_to_human=True)
-
 
 
 if __name__ == "__main__":
