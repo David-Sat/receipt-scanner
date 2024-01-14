@@ -1,0 +1,79 @@
+[
+  {
+    "input": {
+      "receiptItems": [
+        {
+          "itemName": "Wrigley's Extra",
+          "price": 2.25
+        },
+        {
+          "itemName": "Allwetter-Kleb.",
+          "price": 3.99
+        },
+        {
+          "itemName": "Griech. Pur 4x150g",
+          "price": 1.29
+        },
+        {
+          "itemName": "Torffr. Blaubeeren",
+          "price": 2.99
+        },
+        {
+          "itemName": "Lauchzwiebeln",
+          "price": 0.69
+        },
+        {
+          "itemName": "Mandarinen 1kg",
+          "price": 1.39
+        },
+        {
+          "itemName": "Kerryg Orig 250g",
+          "price": 1.59
+        },
+        {
+          "itemName": "Kerryg Orig 250g",
+          "price": 1.39
+        }
+      ]
+    },
+    "output": {
+      "receiptItems": [
+        {
+          "itemName": "Wrigley's Extra",
+          "price": 2.25,
+          "nutritionalValue": 5
+        },
+        {
+          "itemName": "Griech. Pur 4x150g",
+          "price": 1.29,
+          "nutritionalValue": 8
+        },
+        {
+          "itemName": "Torffr. Blaubeeren",
+          "price": 2.99,
+          "nutritionalValue": 9
+        },
+        {
+          "itemName": "Lauchzwiebeln",
+          "price": 0.69,
+          "nutritionalValue": 9
+        },
+        {
+          "itemName": "Mandarinen 1kg",
+          "price": 1.39,
+          "nutritionalValue": 9
+        },
+        {
+          "itemName": "Kerryg Orig 250g",
+          "price": 1.59,
+          "nutritionalValue": 7
+        },
+        {
+          "itemName": "Kerryg Orig 250g",
+          "price": 1.39,
+          "nutritionalValue": 7
+        }
+      ]
+    }
+  }
+]
