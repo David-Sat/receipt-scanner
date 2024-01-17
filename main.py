@@ -65,6 +65,7 @@ def get_and_display_healthy_alternatives(unhealthy_items_str):
             healthy_alternatives = get_healthy_alternatives(unhealthy_items_str)
             st.success('Healthy alternatives found!')
             st.write(healthy_alternatives)
+            st.write("Healthier alternatives are always provided in the same price range.")
     except Exception as e:
         st.error(f"An error occurred while finding healthy alternatives: {e}")
 
@@ -97,6 +98,8 @@ def process_receipt(image_url: str) -> str:
 def main():
     get_api_key()
     st.title("nourishLens")
+    st.subheader("A receipt analysis tool to fight malnutrition")
+    st.write("nourishLens won at both the local Munich GDSC Ideathon and the Europe-wide competition. It revolutionizes nutritional awareness for low-income families, offering intuitive, cost-effective food choices without the hassle of manual entry. By analyzing grocery receipts, nourishLens simplifies healthy living, bridging the gap in health inequality.")
 
     if 'receipt_data' not in st.session_state:
         try:
@@ -116,7 +119,7 @@ def main():
     if 'image_url' not in st.session_state:
         st.session_state['image_url'] = ""
 
-    image_url = st.text_input("Enter image URL", value=st.session_state['image_url'])
+    image_url = st.text_input("Enter image URL of a receipt or select one of the examples below.", value=st.session_state['image_url'])
 
 
     col1, col2, col3 = st.columns(3)
@@ -145,7 +148,7 @@ def main():
             st.error("Please enter an image URL to process.")
 
 
-    if st.button("Load and Display JSON Data"):
+    if st.button("Load and Display Groceries of the Last Month"):
         if 'receipt_data' in st.session_state and st.session_state['receipt_data']:
             # Convert the session state data to JSON string
             json_data = json.dumps(st.session_state['receipt_data'])
@@ -155,7 +158,7 @@ def main():
             st.write("No data available in the session state.")
 
 
-    if st.button("Show Suggestions"):
+    if st.button("Display Healthier Alternatives"):
         least_nutritious_items = get_three_least_nutritious_items()
         
         unhealthy_items_str = ", ".join([f"{item['itemName']} ${item['price']}" for item in least_nutritious_items])
@@ -168,7 +171,6 @@ def main():
 
     calculate_average_nutritional_level()
 
-    
 
 if __name__ == "__main__":
     main()
