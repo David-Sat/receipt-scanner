@@ -4,3 +4,6 @@ nourishLens won at both the local Munich GDSC Ideathon and the Europe-wide compe
 
 Access the prototype on [Streamlit](https://nourishlens.streamlit.app/)
 
+## Preliminary Architecture
+
+![Preliminary Architecture](nourishLensArchitecture.drawio.png?raw=true "Title")
